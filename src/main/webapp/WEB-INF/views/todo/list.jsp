@@ -53,6 +53,7 @@
             <h5 class="card-title">Search</h5>
             <form action="/todo/list" method="get">
                 <input type="hidden" name="size" value="${pageRequestDTO.size}"> <!-- value에 size값을 넣어줌 -->
+
                 <div class="mb-3">
                     <input type="checkbox" name="finished" ${pageRequestDTO.finished?"checked":""} >완료여부
                     <!-- checked 속성은 checked가 true일 때만 적용됨 -->
@@ -127,17 +128,19 @@
                     </ul>
                 </div>
 
-                <script> <!-- 페이지 이동 -->
-                    document.querySelector(".pagination").addEventListener("click", function (e) {
+                <script>
+                    document.querySelector(".pagination").addEventListener("click", function (e){
                         e.preventDefault()
                         e.stopPropagation()
-                        const target = e.target
-
-                        if(target.tagName !== "A"){
+                        const target=e.target
+                        if(target.tagName !== 'A'){
                             return
                         }
-                        const num = target.getAttribute("data-num")
-                        self.location=`/todo/list?page=\${num}`
+                        const num=target.getAttribute("data-num")
+                        const formObj=document.querySelector("form");
+                        formObj.innerHTML+=`<input type='hidden' name='page' value='\${num}'>`
+                        formObj.submit()
+                        //    self.location=`/todo/list?page=\${num}&\${pageRequestDTO.link}`
                     })
                 </script>
 
