@@ -15,4 +15,47 @@
     <select id="getList" resultType="org.pgm.todopro.vo.TodoVO">
         select * from tbl_todo
     </select>
+    <select id="selectList" resultType="org.pgm.todopro.vo.TodoVO">
+        select * from tbl_todo
+        <include refid="search"></include> <!-- search -->
+        order by tno desc limit #{skip}, #{size}
+    </select>
+    <select id="getCount" resultType="int">
+        select count(*) from tbl_todo
+        <include refid="search"></include> <!-- search -->
+    </select>
+
+    <!-- search -->
+    <sql id="search">
+        <where>
+            <if test="types != null and types.length > 0">
+                <foreach collection="types" item="type" open="(" close=") " separator=" OR ">
+                    <if test="type == 't'.toString()">
+                        title like concat('%', #{keyword}, '%')
+                    </if>
+                    <if test="type == 'w'.toString()">
+                        writer like concat('%', #{keyword}, '%')
+                    </if>
+                </foreach>
+            </if>
+            <if test="finished">
+                <trim prefix="and">
+                    finished = 1
+                </trim>
+            </if>
+            <if test="from != null and to != null">
+                <trim prefix="and">
+                    dueDate between #{from} and #{to}
+                </trim>
+            </if>
+        </where>
+
+    </sql>
+
+    <delete id="delete">
+        delete from tbl_todo where tno=#{tno}
+    </delete>
+    <update id="update">
+        update tbl_todo set title=#{title}, dueDate=#{dueDate}, finished=#{finished} where tno=#{tno}
+    </update>
 </mapper>
