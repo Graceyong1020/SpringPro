@@ -129,6 +129,7 @@
                 </div>
 
                 <script>
+                    // pagination 클릭 시 페이지 이동 처리 (이벤트 위임) - 이벤트 위임은 부모에 이벤트를 걸어서 자식에게 이벤트를 전달하는 방식
                     document.querySelector(".pagination").addEventListener("click", function (e){
                         e.preventDefault()
                         e.stopPropagation()
@@ -141,7 +142,15 @@
                         formObj.innerHTML+=`<input type='hidden' name='page' value='\${num}'>`
                         formObj.submit()
                         //    self.location=`/todo/list?page=\${num}&\${pageRequestDTO.link}`
-                    })
+                    }, false)
+                    // clear 버튼 클릭 시
+                    document.querySelector(".clearBtn").addEventListener("click", function (e){
+                        e.preventDefault()
+                        e.stopPropagation()
+
+                        self.location=`/todo/list`
+
+                    }, false)
                 </script>
 
             </div>
